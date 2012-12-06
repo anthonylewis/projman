@@ -1,27 +1,40 @@
-<h1>Listing projects</h1>
-
-<table>
+<h2>Listing projects</h2>
+<div class="span8">
+<table class="table table-condensed">
+  <thead>
   <tr>
     <th>Title</th>
     <th>Private</th>
     <th>User</th>
+    <th>Tasks</th>
     <th></th>
     <th></th>
     <th></th>
   </tr>
-
-<% @projects.each do |project| %>
-  <tr>
-    <td><%= project.title %></td>
-    <td><%= project.private %></td>
-    <td><%= project.user %></td>
-    <td><%= link_to 'Show', project %></td>
-    <td><%= link_to 'Edit', edit_project_path(project) %></td>
-    <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
+  </thead>
+  <tbody>
+  <% @projects.each do |project| %>
+    <% cache project do %>
+    <% sleep 1 %>
+    <tr>
+      <td><%= project.title %></td>
+      <td><%= project.private %></td>
+      <td><%= project.user_name %></td>
+      <td><%= project.tasks.length %></td>
+      <td><%= link_to 'Show', project %></td>
+      <td><%= link_to 'Edit', edit_project_path(project) %></td>
+      <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+    <% end %>
+  <% end %>
+  </tbody>
 </table>
 
 <br />
 
-<%= link_to 'New Project', new_project_path %>
+<%= link_to 'New Project', new_project_path, :class => "btn btn-mini" %>
+
+<%= will_paginate @projects %>
+
+<%= debug @projects %>
+</div>
