@@ -10,6 +10,11 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     authorize! :read, @user, :message => 'Not authorized as an administrator.'
   end
+
+  def rank
+    @user = User.find(params[:user_id])
+    render :text => @user.calculate_rank
+  end
   
   def update
     authorize! :update, @user, :message => 'Not authorized as an administrator.'

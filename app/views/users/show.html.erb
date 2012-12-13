@@ -1,3 +1,10 @@
 <h3>User</h3>
 <p>User: <%= @user.name %></p>
 <p>Email: <%= @user.email if @user.email %></p>
+<p>Rank: <span id="user_rank">calculating...</span></p>
+
+<script>
+  $(document).ready(function() {
+    $("#user_rank").load("<%= user_rank_path(@user) %>");
+  });
+</script>

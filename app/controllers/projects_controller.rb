@@ -5,7 +5,6 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    debugger
     logger.debug "*** Starting index action ***"
     logger.debug "Page = #{params[:page]}"
     @projects = @projects.includes(:tasks).page(params[:page])
@@ -57,6 +56,9 @@ class ProjectsController < ApplicationController
   def update
     respond_to do |format|
       if @project.update_attributes(params[:project])
+        if @project.user
+          UserMailer.delay.assignment(@project, @project.user)
+        end
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
         format.json { head :no_content }
       else
